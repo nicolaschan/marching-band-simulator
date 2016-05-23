@@ -31,6 +31,31 @@ for (var i = 0; i < num_marchers; i++) {
 }
 
 var future_positions = [];
+const fix = function() {
+	var adjust = {
+		x: 0,
+		y: 0
+	};
+	for (var i in future_positions) {
+		if (future_positions[i].x - 50 > 0)
+			if (Math.abs(adjust.x) < Math.abs(future_positions[i].x - 50))
+				adjust.x = future_positions[i].x - 50;
+		if (future_positions[i].x + 50 < 0)
+			if (Math.abs(adjust.x) < Math.abs(future_positions[i].x + 50))
+				adjust.x = future_positions[i].x + 50;
+		if (future_positions[i].y - 25 > 0)
+			if (Math.abs(adjust.y) < Math.abs(future_positions[i].y - 25))
+				adjust.y = future_positions[i].y - 25;
+		if (future_positions[i].y + 25 < 0)
+			if (Math.abs(adjust.y) < Math.abs(future_positions[i].y + 25))
+				adjust.y = future_positions[i].y + 25;
+	}
+	for (var i in future_positions) {
+		future_positions[i].x -= adjust.x;
+		future_positions[i].y -= adjust.y;
+	}
+};
+
 const circle = function(center_x, center_y, radius) {
 	for (var i in marchers) {
 		var angle = (2 * Math.PI / num_marchers) * i;
@@ -41,6 +66,7 @@ const circle = function(center_x, center_y, radius) {
 			y: y
 		};
 	}
+	fix();
 };
 const block = function(center_x, center_y, spacing, width) {
 	if (!width)
@@ -53,6 +79,7 @@ const block = function(center_x, center_y, spacing, width) {
 			y: y
 		};
 	}
+	fix();
 };
 const square = function(center_x, center_y, spacing) {
 	const side_length = num_marchers / 4;
@@ -79,6 +106,7 @@ const square = function(center_x, center_y, spacing) {
 				y: center_y + height - height / 2
 			};
 	}
+	fix();
 };
 
 
